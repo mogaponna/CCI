@@ -140,17 +140,26 @@ export default function Home() {
   };
 
   const handleReset = () => {
+    // Reset all parameters to their initial state
     setParameters(initialCCIParameters);
+    setAnnexureKData(null);
     setShowResults(false);
     setShowReport(false);
     setShowDataCollection(false);
     setShowAnnexureK(false);
     setShowSBOM(false);
     setShowOnlyParameterReport(false);
+    setShowSEBIInfo(false);
     setOrganizationName('Enter Organization Name');
     setOrganizationNameError('');
     setExpandedParameter(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setAssessmentDate(new Date().toISOString().split('T')[0]);
+    
+    // Show toast notification
+    toast.success('All values reset successfully');
+    
+    // Reset expanded state of parameters
+    setExpandedParameter(null);
   };
 
   const handleViewReport = () => {
@@ -365,9 +374,13 @@ export default function Home() {
     setShowResults(false);
     setShowReport(false);
     setShowAnnexureK(false);
+    setShowSBOM(false);
+    setShowOnlyParameterReport(false);
+    setShowSEBIInfo(false);
+    
     // Smooth scroll to data collection form
     setTimeout(() => {
-      const formElement = document.getElementById('data-collection');
+      const formElement = document.getElementById('data-collection-form');
       if (formElement) {
         formElement.scrollIntoView({ behavior: 'smooth' });
       }
@@ -745,7 +758,7 @@ export default function Home() {
 
           {/* SEBI Info */}
           {showSEBIInfo && (
-            <section id="sebi-info" aria-label="SEBI CSCRF Information" className="mt-4 animate-fadeIn">
+            <section id="sebi-info" aria-label="SEBI CSCRF Information" className="mt-4 animate-fadeIn relative z-10">
               <SEBIInfo onCalculate={() => {
                 setShowSEBIInfo(false);
                 setTimeout(() => {
